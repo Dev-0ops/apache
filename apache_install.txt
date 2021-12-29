@@ -1,0 +1,100 @@
+1. 관련 패키지 설치
+## apache 설치를 위해 필요한 기본 의존성 패키지 설치
+
+yum install -y wget gcc gcc-c++ openssl openssl-devl expat-devel pcre-devel
+yum -y groupinstall "Development Tools"
+
+## /usr/local/src 경로에 소스파일 다운로드
+## 다운로드 출처는 버전마다 달라질수 있으므로 사이트 직접 접속하여 확인
+
+
+cd /usr/local/src
+wget https://sourceforge.net/projects/pcre/files/pcre/8.44/pcre-8.44.tar.gz
+wget http://apache.mirror.cdnetworks.com/apr/apr-1.7.0.tar.gz
+wget http://apache.mirror.cdnetworks.com/apr/apr-util-1.6.1.tar.gz 
+wget http://mirror.apache-kr.org/httpd/httpd-2.4.51.tar.gz
+
+cd /usr/local/src
+tar zxvf apr-1.7.0.tar.gz
+tar zxvf apr-util-1.6.1.tar.gz 
+tar zxvf httpd-2.4.51.tar.gz
+
+
+2. pcre 설치
+
+cd /usr/local/src
+tar zxvf pcre-8.44.tar.gz
+cd pcre-8.44
+
+./configure --prefix=/usr/local/src
+make && make install
+
+cd ..
+mv apr-1.7.0 ./httpd-2.4.51
+mv apr-util-1.6.1 ./httpd-2.4.51/srclib/apr-util
+
+3. apr / apr-util설치
+
+### apr 설치
+
+cd /usr/local/src/httpd-2.4.51/apr-1.7.0
+
+./configure
+make&&make install
+
+** libtool 에러시, cp -arp libtool libtoolT 후, configure 부터 다시
+
+### apr-util 설치
+
+cd /usr/local/src/httpd-2.4.51/srclib/apr-util
+yum -y install expat-devel
+
+./configure --with-apr=/usr/local/apr
+make&&make install
+
+4. apache 설치
+
+
+cd /usr/local/src/httpd-2.4.51
+
+./configure --prefix=/usr/local/apache
+
+make && make install
+
+/usr/local/apache/bin/apachectl start
+
+
+5. apache 시스템 등록
+
+vi /usr/lib/systemd/system/apache.service
+
+[Unit]
+Description=apache
+After=network.target syslog.target
+
+[Service]
+Type=forking
+
+Environment=CATALINA_HOME=/usr/local/apache
+User=root
+Group=root
+
+ExecStart=/usr/local/apache/bin/apachectl start
+ExecStop=/usr/local/apache/bin/apachectl stop
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+
+-----------------------------------------------------------
+
+systemctl start apache
+systemctl enable apache
+systemctl status apache
+
+

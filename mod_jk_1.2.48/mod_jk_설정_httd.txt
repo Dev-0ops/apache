@@ -1,0 +1,8 @@
+vi /usr/local/apache/conf/httpd.conf
+
+LoadModule jk_module modules/mod_jk.so     // 모듈 추가
+
+<IfModule jk_module>
+Include conf/mod_jk.conf
+</IfModule>                                // 하단에 추가
+

@@ -1,0 +1,45 @@
+X-forward설정
+'X-foward'란 Web server의 접근하는 IP 제어에 관한 부분이다.
+해당 문서에선 web server에 앞단에 위치한 load balancer의 IP가 accese log에 기록되는 문제
+health check의 ip가 accese log에 기록되는 문제점에 의한 설정을 의미한다.
+* aws load balancer의 경우 자체 x-forwadring을 지원한다.
+
+# WEB Server
+
+tail -f /usr/local/apache/logs/access_log   // 찍히는 로그 IP 확인
+
+vim /usr/local/apache/conf/httpd_conf       // apache 문서수정.
+
+LoadModule 
+remoteip_module modules/mod_remoteip.so // 1. 주석 해제 remoteip_modul을 켜준다.
+
+SetEnvIf Remote_Addr "35.191.11.212" do_not_log // 2. 할당받은 LB Health check 대역을 차단한다. (access_log)
+SetEnvIf Remote_Addr "35.191.11.216" do_not_log
+SetEnvIf Remote_Addr "35.191.11.208" do_not_log
+
+
+# 35.191.0.0/16 에 대역대를 전부 차단해주어야 하는 것 이 맞다.
+# 해당 설정은 추후에 진행 우선 자주 찍히는 IP를 차단한다.
+
+<IfModule log_config_module> #log에 위 대역대를 기록하지 않도록 설정
+
+LogFormat "%a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%a %l %u %t \”%r\” %>s %b" common
+
+	<IfModule logio_module>
+     LogFormat "%a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
+	</IfModule>
+	CustomLog "logs/access_log" common  env=!do_not_log
+</IfModule>  // 3. 4. 5. 기존 로그 양식은 주석 처리 해준다.
+
+<IfModule remoteip_module>
+        RemoteIPHeader X-Forwarded-For
+        RemoteIPTrustedProxy 34.149.85.237    // 6. LB 고정 IP
+        RemoteIPTrustedProxy 35.191.0.0/16    // health check IP
+        RemoteIPTrustedProxy 130.211.0.0/22   // health check IP 
+</IfModule>
+
+-----------------------------------------------------------------------------
+
+systemctl restart apache 
+

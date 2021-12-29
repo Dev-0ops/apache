@@ -1,0 +1,13 @@
+# 설치 경로 설정
+
+cd /usr/local/src
+
+wget https://mirror.navercorp.com/apache/tomcat/tomcat-connectors/jk/tomcat-connectors-1.2.48-src.tar.gz
+tar xvfz tomcat-connectors-1.2.48-src.tar.gz
+
+cd /usr/local/src/tomcat-connectors-1.2.48-src/native/
+
+#반드시 apxs 경로를 확인하고 컴파일할 것
+./configure --with-apxs=/usr/local/apache/bin/apxs
+make&&make install
+
