@@ -5,6 +5,7 @@ echo "1. 제시한 부분에 대한 명시가 없을 시, (Default) 설정을 �
 echo "2. 최소 50MB의 디스크 용량을 요구합니다."
 echo "3. ANSI-C 컴파일러와 컴파일 시스템를 요구합니다."
 echo "4. Perl 5 모듈을 추가로 설치합니다."
+echo "5. apache 1.x 버전은 지원하지 않습니다."
 
 echo "yum pakage를 업데이트 합니다."
 sudo yum update
@@ -33,6 +34,12 @@ yum list installed | grep zlib-devel
 if [ $? -ne 0 ]
 then
     yum install -y zlib-devel
+fi
+
+yum list installed | grep openssl
+if [ $? -ne 0 ]
+then
+    yum install -y openssl
 fi
 
 yum list installed | grep openssl-devel
@@ -85,5 +92,12 @@ if [ "$apv" = "" ]; then
     tar -zxvf $DIR/httpd-2.4.54.tar.gz
 else
     wegt http://archive.apache.org/dist/httpd/httpd-$apv.tar.gz -P $DIR
+        if [ $? -ne 0 ]; then
+    echo "존재하지 않는 아파치 버전이거나, 설치 경로가 변경될 수 있습니다."
+    echo "공식 문서를 확인해 주세요."
+    exit 0
+    fi
     tar -zxvf $DIR/httpd-$apv.tar.gz
 fi
+
+######################## 필수 라이브러리 설치 ##########################
