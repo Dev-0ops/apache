@@ -9,7 +9,9 @@
 ###### [Apache HTTP Server Version 2.0 문서](https://httpd.apache.org/docs/2.0/)   
 ###### [Apache HTTP Server Version 2.2 문서](https://httpd.apache.org/docs/2.2/)   
 ###### [Apache HTTP Server Version 2.4 문서](https://httpd.apache.org/docs/2.2/)     
-<br>
+<br>    
+
+-------
 
 #### 요구 사항   
 
@@ -22,6 +24,7 @@
 - **Perl 5 [선택사항]**
   ##### * *apxs나 dbmmanage와 같은 지원 스크립트를 위해 Perl 5 인터프리터가 필요합니다.*  
  
+ ----
 #### 설치 방법
-
+##### **RHEL 7 혹은 CentOS7기반으로 패키지를 설치하기 때문에 다른 OS의 경우 오류가 발생할 수 있습니다.*
 
