@@ -175,7 +175,7 @@ read apv
 if [ "$apv" = "" ]; then
     wget -P $LDIR https://dlcdn.apache.org/httpd/httpd-2.4.54.tar.gz
     tar -zxvf httpd-2.4.54.tar.gz
-    mv httpd-2.4.54.tar.gz $ADIR/
+    mv httpd-2.4.54 $ADIR/
 else
     wegt -P $LDIR http://archive.apache.org/dist/httpd/httpd-$apv.tar.gz
         if [ $? -ne 0 ]; then
@@ -184,7 +184,7 @@ else
     exit 0
     fi
     tar -zxvf httpd-$apv.tar.gz
-    mv httpd-$apv.tar.gz $ADIR/
+    mv httpd-$apv $ADIR/
 fi
 
 
