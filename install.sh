@@ -84,6 +84,9 @@ echo "기본 경로를 사용하려면 Enter를 입력해주세요.(기본 경�
 read ADIR
 
 if [ "$ADIR" = "" ]; then
+    if [ -d /usr/local/apahce ]; then
+        exit
+    fi
     echo "기본 경로 /usr/local/apahce 을 사용합니다."
     mkdir /usr/local/apahce
 elif [ ! -d "$ADIR" ]; then
@@ -102,6 +105,7 @@ read LDIR
 
 if [ "$LDIR" = "" ]; then
     echo "기본 경로 /usr/local/src 을 사용합니다."
+    LDIR=/usr/local/src
 elif [ ! -d "$LDIR" ]; then
     echo "설정한 경로는 $LDIR 입니다."
     mkdir -p "$LDIR"
@@ -110,20 +114,20 @@ else
 fi
 
 echo "pcre 라이브러리를 설치합니다."
-echo "가장 최신 버전을 설치 하려면 Enter를 입력해주세요.(8.45)"
+echo "가장 최신 버전을 설치 하려면 Enter를 입력해주세요.(10.40)"
 read pev
 
 if [ "$pev" = "" ]; then
-    wget https://sourceforge.net/projects/pcre/files/pcre/8.45/pcre-8.45.tar.gz -P $LDIR
-    tar -zxvf $LDIR/pcre-8.45.tar.gz
+    wget https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.gz -P $LDIR
+    tar -zxvf $LDIR/pcre2-10.40.tar.gz
 else
-    wegt https://sourceforge.net/projects/pcre/files/pcre/$pev/pcre-$pev.tar.gz -P $LDIR
+    wegt https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$pev/pcre2-$pev.tar.gz -P $LDIR
         if [ $? -ne 0 ]; then
             echo "존재하지 않는 Perl 버전이거나, 설치 경로가 변경되었을 수 있습니다."
             echo "공식 문서를 확인해 주세요.(https://www.cpan.org/src/README.html)"
             exit 0
         fi
-    tar -zxvf $LDIR/pcre-$pev.tar.gz
+    tar -zxvf $LDIR/pcre2-$pev.tar.gz
 
 fi
 
@@ -184,15 +188,14 @@ fi
 
 ######################## 라이브러리 컴파일 ##########################
 
-
 echo "pcre 컴파일"
 
 if [ "$pev" = "" ]; then
-    cd $LDIR/pcre-8.45
+    cd $LDIR/pcre2-10.40.tar.gz
     ./configure --prefix=$LDIR
     make && make install
 else
-    cd $LDIR/pcre-$pev
+    cd $LDIR/pcre2-$pev.tar.gz
     ./configure --prefix=$LDIR
     make && make install
 fi
