@@ -85,10 +85,11 @@ read ADIR
 
 if [ "$ADIR" = "" ]; then
     if [ -d /usr/local/apahce ]; then
-        exit
+        echo "기본 경로 /usr/local/apahce 을 사용합니다."
+    else
+        echo "기본 경로 /usr/local/apahce 을 사용합니다."
+        mkdir /usr/local/apahce
     fi
-    echo "기본 경로 /usr/local/apahce 을 사용합니다."
-    mkdir /usr/local/apahce
 elif [ ! -d "$ADIR" ]; then
     echo "설정한 경로는 $ADIR 입니다."
     mkdir -p "$ADIR"
@@ -110,7 +111,7 @@ elif [ ! -d "$LDIR" ]; then
     echo "설정한 경로는 $LDIR 입니다."
     mkdir -p "$LDIR"
 else
-    echo "이미 존재하는 경로입니다."
+    echo "이미 존재하는 경로 $LDIR 을 사용합니다."
 fi
 
 echo "pcre 라이브러리를 설치합니다."
@@ -118,10 +119,10 @@ echo "가장 최신 버전을 설치 하려면 Enter를 입력해주세요.(10.4
 read pev
 
 if [ "$pev" = "" ]; then
-    wget https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.gz -P $LDIR
+    wget -P $LDIR https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.gz
     tar -zxvf $LDIR/pcre2-10.40.tar.gz
 else
-    wegt https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$pev/pcre2-$pev.tar.gz -P $LDIR
+    wegt -P $LDIR https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$pev/pcre2-$pev.tar.gz
         if [ $? -ne 0 ]; then
             echo "존재하지 않는 Perl 버전이거나, 설치 경로가 변경되었을 수 있습니다."
             echo "공식 문서를 확인해 주세요.(https://www.cpan.org/src/README.html)"
@@ -136,10 +137,10 @@ echo "가장 최신 버전을 설치 하려면 Enter를 입력해주세요.(1.70
 read arv
 
 if [ "$arv" = "" ]; then
-    wget https://dlcdn.apache.org//apr/apr-1.7.0.tar.gz -P $LDIR
+    wget -P $LDIR https://dlcdn.apache.org//apr/apr-1.7.0.tar.gz
     tar -zxvf $LDIR/apr-1.7.0.tar.gz
 else
-    wegt https://dlcdn.apache.org//apr/apr-$arv.tar.gz -P $LDIR
+    wegt -P $LDIR https://dlcdn.apache.org//apr/apr-$arv.tar.gz
         if [ $? -ne 0 ]; then
     echo "존재하지 않는 apr 버전이거나, 설치 경로가 변경되었을 수 있습니다."
     echo "공식 문서를 확인해 주세요.(https://apr.apache.org/download.cgi)"
@@ -153,10 +154,10 @@ echo "가장 최신 버전을 설치 하려면 Enter를 입력해주세요.(1.6.
 read auv
 
 if [ "$auv" = "" ]; then
-    wget https://dlcdn.apache.org//apr/apr-util-1.6.1.tar.gz -P $LDIR
-    tar -zxvf $DIR/apr-util-1.6.1.tar.gz
+    wget -P $LDIR https://dlcdn.apache.org//apr/apr-util-1.6.1.tar.gz
+    tar -zxvf $LDIR/apr-util-1.6.1.tar.gz
 else
-    wegt https://dlcdn.apache.org//apr/apr-util-$auv.tar.gz -P $LDIR
+    wegt -P $LDIR https://dlcdn.apache.org//apr/apr-util-$auv.tar.gz
         if [ $? -ne 0 ]; then
     echo "존재하지 않는 apr 버전이거나, 설치 경로가 변경되었을 수 있습니다."
     echo "공식 문서를 확인해 주세요.(https://apr.apache.org/download.cgi)"
@@ -172,16 +173,18 @@ echo "가장 최신 버전을 설치 하려면 Enter를 입력해주세요.(2.4.
 read apv
 
 if [ "$apv" = "" ]; then
-    wget https://dlcdn.apache.org/httpd/httpd-2.4.54.tar.gz -P $DIR
-    tar -zxvf $DIR/httpd-2.4.54.tar.gz
+    wget -P $LDIR https://dlcdn.apache.org/httpd/httpd-2.4.54.tar.gz
+    tar -zxvf httpd-2.4.54.tar.gz
+    mv httpd-2.4.54.tar.gz $ADIR/
 else
-    wegt http://archive.apache.org/dist/httpd/httpd-$apv.tar.gz -P $DIR
+    wegt -P $LDIR http://archive.apache.org/dist/httpd/httpd-$apv.tar.gz
         if [ $? -ne 0 ]; then
     echo "존재하지 않는 아파치 버전이거나, 설치 경로가 변경되었을 수 있습니다."
     echo "공식 문서를 확인해 주세요.(https://httpd.apache.org/download.cgi)"
     exit 0
     fi
-    tar -zxvf $DIR/httpd-$apv.tar.gz
+    tar -zxvf httpd-$apv.tar.gz
+    mv httpd-$apv.tar.gz $ADIR/
 fi
 
 
@@ -205,28 +208,28 @@ echo "apr, apr-util 라이브러리 경로 이동 & 컴파일"
 if [ "$apv" = "" ]; then
     if [ "$arv" = "" ]; then
         cd $LDIR
-        mv apr-1.7.0 $DIR/httpd-2.4.54/srclib/
-        mv apr-util-1.6.1 $DIR/httpd-2.4.54/srclib/
+        mv apr-1.7.0 $ADIR/httpd-2.4.54/srclib/
+        mv apr-util-1.6.1 $ADIR/httpd-2.4.54/srclib/
     
     else
         cd $LDIR
-        mv apr-$arv $DIR/httpd-2.4.54/srclib/
-        mv apr-util-$auv $DIR/httpd-2.4.54/srclib/
+        mv apr-$arv $ADIR/httpd-2.4.54/srclib/
+        mv apr-util-$auv $ADIR/httpd-2.4.54/srclib/
     fi
-    cd $DIR/httpd-2.4.54/
-    ./configure --prefix=$DIR/httpd-2.4.54 --with-included-apr --with-pcre=$DIR/bin/pcre-config
+    cd $ADIR/httpd-2.4.54/
+    ./configure --prefix=$ADIR/httpd-2.4.54 --with-included-apr --with-pcre=$ADIR/bin/pcre-config
     make && make install
 else
     if [ "$arv" = "" ]; then
         cd $LDIR
-        mv apr-1.7.0 $DIR/httpd-$apv/srclib/
-        mv apr-util-1.6.1 $DIR/httpd-2.4.54/srclib/
+        mv apr-1.7.0 $ADIR/httpd-$apv/srclib/
+        mv apr-util-1.6.1 $ADIR/httpd-2.4.54/srclib/
     else
         cd $LDIR
-        mv apr-$arv $DIR/httpd-$apv/srclib/
-        mv apr-util-$auv $DIR/httpd-2.4.54/srclib/
+        mv apr-$arv $ADIR/httpd-$apv/srclib/
+        mv apr-util-$auv $ADIR/httpd-2.4.54/srclib/
     fi
-    ./configure --prefix=$DIR/httpd-$apv --with-included-apr --with-pcre=$DIR/bin/pcre-config
+    ./configure --prefix=$ADIR/httpd-$apv --with-included-apr --with-pcre=$ADIR/bin/pcre-config
     make && make install
 fi
 
