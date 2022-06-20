@@ -70,7 +70,7 @@ then
 fi
 
 echo "expat-devel 라이브러리가 있는지 확인합니다."
-yum list installed | expat-devel
+yum list installed | grep expat-devel
 if [ $? -ne 0 ]
 then
     echo "expat-devel 라이브러리를 설치합니다."
@@ -83,16 +83,15 @@ echo "아파치를 설치할 경로를 입력해 주세요."
 echo "기본 경로를 사용하려면 Enter를 입력해주세요.(기본 경로 /usr/local/apahce)"
 read ADIR
 
-if [ -d "$ADIR"]; then
+if [ "$ADIR" = "" ]; then
+    echo "기본 경로 /usr/local/apahce 을 사용합니다."
+    mkdir /usr/local/apahce
+elif [ ! -d "$ADIR" ]; then
     echo "설정한 경로는 $ADIR 입니다."
-else 
-    ADIR=/usr/local/apahce
-    mkdir -p /usr/local/apahce
-    echo "기본 경로 $ADIR 을 사용합니다."
+    mkdir -p "$ADIR"
+else
+    echo "이미 존재하는 경로입니다."
 fi
-
-
-
 
 ######################## 필수 라이브러리 설치 ##########################
 
@@ -100,12 +99,22 @@ echo "라이브러리의 설치 경로를 입력해주세요."
 echo "기본 경로를 사용하려면 Enter를 입력해주세요.(기본 경로 /usr/local/src)"
 read LDIR
 
+
+if [ "$LDIR" = "" ]; then
+    echo "기본 경로 /usr/local/src 을 사용합니다."
+elif [ ! -d "$LDIR" ]; then
+    echo "설정한 경로는 $LDIR 입니다."
+    mkdir -p "$LDIR"
+else
+    echo "이미 존재하는 경로입니다."
+fi
+
 echo "pcre 라이브러리를 설치합니다."
 echo "가장 최신 버전을 설치 하려면 Enter를 입력해주세요.(8.45)"
 read pev
 
 if [ "$pev" = "" ]; then
-    wget  https://sourceforge.net/projects/pcre/files/pcre/8.45/pcre-8.45.tar.gz -P $LDIR
+    wget https://sourceforge.net/projects/pcre/files/pcre/8.45/pcre-8.45.tar.gz -P $LDIR
     tar -zxvf $LDIR/pcre-8.45.tar.gz
 else
     wegt https://sourceforge.net/projects/pcre/files/pcre/$pev/pcre-$pev.tar.gz -P $LDIR
