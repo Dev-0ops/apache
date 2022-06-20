@@ -8,7 +8,7 @@
 ##### *다음 권장 사항은 2.4 버전을 기준으로 작성되었습니다.*
 ###### [Apache HTTP Server Version 2.0 문서](https://httpd.apache.org/docs/2.0/)   
 ###### [Apache HTTP Server Version 2.2 문서](https://httpd.apache.org/docs/2.2/)   
-###### [Apache HTTP Server Version 2.4 문서](https://httpd.apache.org/docs/2.2/)     
+###### [Apache HTTP Server Version 2.4 문서](https://httpd.apache.org/docs/2.4/)     
 <br>    
 
 -------
