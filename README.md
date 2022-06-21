@@ -27,4 +27,10 @@
  ----
 #### 설치 방법
 ##### **RHEL 7 혹은 CentOS7기반으로 패키지를 설치하기 때문에 다른 OS의 경우 오류가 발생할 수 있습니다.*
+1. git clone을 통해 해당 git repository를 복사한다.   
+```
+git clone https://github.com/Dev-0ops/apache.git
+
+```
+
 
