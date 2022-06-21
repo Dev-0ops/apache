@@ -27,10 +27,22 @@
  ----
 #### 설치 방법
 ##### **RHEL 7 혹은 CentOS7기반으로 패키지를 설치하기 때문에 다른 OS의 경우 오류가 발생할 수 있습니다.*
-1. git clone을 통해 해당 git repository를 복사한다.   
+1. git clone을 통해 해당 git repository를 복사합니다.   
 ```
 git clone https://github.com/Dev-0ops/apache.git
 
 ```
+2. chmod 700 install.sh 명령어를 통해 관리자 권한을 부여합니다
+3. install.sh 스크립트를 실행합니다.
+```
+./install.sh
+```
+4. apache 관련 패키지 파일을 설치합니다.
+5. apache 파일 설치 경로를 입력합니다.
+6. apache 필수 라이브러리 설치 경로를 입력합니다.   
+6-1 pcre 라이브러리의 버전을 입력합니다.  
+6-2 apr 라이브러리의 설치 버전을 입력합니다.   
+6-3 apr-util 라이브러리의 설치 버전을 입력합니다.
+7. apache의 설치 버전을 입력합니다.
 
 
