@@ -80,16 +80,16 @@ fi
 ######################## 설치 디렉토리 설정 ##########################
 
 echo "아파치를 설치할 경로를 입력해 주세요."
-echo "기본 경로를 사용하려면 Enter를 입력해주세요.(기본 경로 /usr/local/apahce)"
+echo "기본 경로를 사용하려면 Enter를 입력해주세요.(기본 경로 /usr/local/apache)"
 read ADIR
 
 if [ "$ADIR" = "" ]; then
-    if [ -d /usr/local/apahce ]; then
+    if [ -d /usr/local/apache ]; then
         echo "기본 경로 /usr/local/apahce 을 사용합니다."
         ADIR=/usr/local/apache
     else
         echo "기본 경로 /usr/local/apahce 을 사용합니다."
-        mkdir /usr/local/apahce
+        mkdir /usr/local/apache
         ADIR=/usr/local/apache
     fi
 elif [ ! -d "$ADIR" ]; then
@@ -207,17 +207,15 @@ echo "apr, apr-util 라이브러리 경로 이동 & 컴파일"
 
 if [ "$apv" = "" ]; then
     if [ "$arv" = "" ]; then
-        cd $LDIR
-        mv apr-1.7.0 $ADIR/httpd-2.4.54/srclib/
-        mv apr-util-1.6.1 $ADIR/httpd-2.4.54/srclib/
+        mv apr-1.7.0 $ADIR/httpd-2.4.54/srclib/apr
+        mv apr-util-1.6.1 $ADIR/httpd-2.4.54/srclib/apr-util
     
     else
-        cd $LDIR
-        mv apr-$arv $ADIR/httpd-2.4.54/srclib/
-        mv apr-util-$auv $ADIR/httpd-2.4.54/srclib/
+        mv apr-$arv $ADIR/httpd-2.4.54/srclib/apr
+        mv apr-util-$auv $ADIR/httpd-2.4.54/srclib/apr-util
     fi
     cd $ADIR/httpd-2.4.54/
-    ./configure --prefix=$ADIR/httpd-2.4.54 --with-apr=$ADIR/httpd-4.4.54/apr-1.7.0 --with-apr-util=$ADIR/httpd-4.4.54/apr-util-1.6.1 --with-pcre=$LDIR/bin/pcre-config
+    ./configure --prefix=$ADIR/httpd-2.4.54 --with-pcre=$LDIR/bin/pcre-config
     make && make install
 else
     if [ "$arv" = "" ]; then
@@ -229,7 +227,10 @@ else
         mv apr-$arv $ADIR/httpd-$apv/srclib/
         mv apr-util-$auv $ADIR/httpd-2.4.54/srclib/
     fi
-    ./configure --prefix=$ADIR/httpd-$apv --with-included-apr --with-pcre=$ADIR/bin/pcre-config
+    ./configure --prefix=$ADIR/httpd-$apv --with-pcre=$LDIR/bin/pcre2-config
     make && make install
 fi
 
+
+
+cp -arp libtool libtoolT
