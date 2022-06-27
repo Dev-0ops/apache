@@ -86,9 +86,11 @@ read ADIR
 if [ "$ADIR" = "" ]; then
     if [ -d /usr/local/apahce ]; then
         echo "기본 경로 /usr/local/apahce 을 사용합니다."
+        ADIR=/usr/local/apache
     else
         echo "기본 경로 /usr/local/apahce 을 사용합니다."
         mkdir /usr/local/apahce
+        ADIR=/usr/local/apache
     fi
 elif [ ! -d "$ADIR" ]; then
     echo "설정한 경로는 $ADIR 입니다."
@@ -215,7 +217,7 @@ if [ "$apv" = "" ]; then
         mv apr-util-$auv $ADIR/httpd-2.4.54/srclib/
     fi
     cd $ADIR/httpd-2.4.54/
-    ./configure --prefix=$ADIR/httpd-2.4.54 --with-included-apr --with-pcre=$ADIR/bin/pcre-config
+    ./configure --prefix=$ADIR/httpd-2.4.54 --with-apr=$ADIR/httpd-4.4.54/apr-1.7.0 --with-apr-util=$ADIR/httpd-4.4.54/apr-util-1.6.1 --with-pcre=$LDIR/bin/pcre-config
     make && make install
 else
     if [ "$arv" = "" ]; then
