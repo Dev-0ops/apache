@@ -120,7 +120,7 @@ read pev
 
 if [ "$pev" = "" ]; then
     wget -P $LDIR https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.gz
-    tar -zxvf $LDIR/pcre2-10.40.tar.gz
+    tar -zxvf $LDIR/pcre2-10.40.tar.gz -C $LDIR/
 else
     wegt -P $LDIR https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$pev/pcre2-$pev.tar.gz
         if [ $? -ne 0 ]; then
@@ -128,7 +128,7 @@ else
             echo "공식 문서를 확인해 주세요.(https://www.cpan.org/src/README.html)"
             exit 0
         fi
-    tar -zxvf $LDIR/pcre2-$pev.tar.gz
+    tar -zxvf $LDIR/pcre2-$pev.tar.gz -C $LDIR/
 
 fi
 
@@ -138,7 +138,7 @@ read arv
 
 if [ "$arv" = "" ]; then
     wget -P $LDIR https://dlcdn.apache.org//apr/apr-1.7.0.tar.gz
-    tar -zxvf $LDIR/apr-1.7.0.tar.gz
+    tar -zxvf $LDIR/apr-1.7.0.tar.gz -C $LDIR/
 else
     wegt -P $LDIR https://dlcdn.apache.org//apr/apr-$arv.tar.gz
         if [ $? -ne 0 ]; then
@@ -146,7 +146,7 @@ else
     echo "공식 문서를 확인해 주세요.(https://apr.apache.org/download.cgi)"
     exit 0
     fi
-    tar -zxvf $LDIR/apr-$apv.tar.gz
+    tar -zxvf $LDIR/apr-$apv.tar.gz -C $LDIR/
 fi
 
 echo "apr-util 라이브러리를 설치합니다."
@@ -155,7 +155,7 @@ read auv
 
 if [ "$auv" = "" ]; then
     wget -P $LDIR https://dlcdn.apache.org//apr/apr-util-1.6.1.tar.gz
-    tar -zxvf $LDIR/apr-util-1.6.1.tar.gz
+    tar -zxvf $LDIR/apr-util-1.6.1.tar.gz -C $LDIR/
 else
     wegt -P $LDIR https://dlcdn.apache.org//apr/apr-util-$auv.tar.gz
         if [ $? -ne 0 ]; then
@@ -163,7 +163,7 @@ else
     echo "공식 문서를 확인해 주세요.(https://apr.apache.org/download.cgi)"
     exit 0
     fi
-    tar -zxvf $LDIR/apr-util-$auv.tar.gz
+    tar -zxvf $LDIR/apr-util-$auv.tar.gz -C $LDIR/
 fi
 
 ######################## 아차피 설치 ##########################
@@ -174,8 +174,7 @@ read apv
 
 if [ "$apv" = "" ]; then
     wget -P $LDIR https://dlcdn.apache.org/httpd/httpd-2.4.54.tar.gz
-    tar -zxvf httpd-2.4.54.tar.gz
-    mv httpd-2.4.54 $ADIR/
+    tar -zxvf $LDIR/httpd-2.4.54.tar.gz -C $ADIR/
 else
     wegt -P $LDIR http://archive.apache.org/dist/httpd/httpd-$apv.tar.gz
         if [ $? -ne 0 ]; then
@@ -183,8 +182,7 @@ else
     echo "공식 문서를 확인해 주세요.(https://httpd.apache.org/download.cgi)"
     exit 0
     fi
-    tar -zxvf httpd-$apv.tar.gz
-    mv httpd-$apv $ADIR/
+    tar -zxvf $LDIR/httpd-$apv.tar.gz -C $ADIR/
 fi
 
 
@@ -194,11 +192,11 @@ fi
 echo "pcre 컴파일"
 
 if [ "$pev" = "" ]; then
-    cd $LDIR/pcre2-10.40.tar.gz
+    cd $LDIR/pcre2-10.40
     ./configure --prefix=$LDIR
     make && make install
 else
-    cd $LDIR/pcre2-$pev.tar.gz
+    cd $LDIR/pcre2-$pev
     ./configure --prefix=$LDIR
     make && make install
 fi
