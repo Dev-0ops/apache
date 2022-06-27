@@ -176,7 +176,7 @@ read apv
 
 if [ "$apv" = "" ]; then
     wget -P $LDIR https://dlcdn.apache.org/httpd/httpd-2.4.54.tar.gz
-    tar -zxvf $LDIR/httpd-2.4.54.tar.gz
+    tar -zxvf $LDIR/httpd-2.4.54.tar.gz -C $LDIR/
 else
     wegt -P $LDIR http://archive.apache.org/dist/httpd/httpd-$apv.tar.gz
         if [ $? -ne 0 ]; then
@@ -184,7 +184,7 @@ else
     echo "공식 문서를 확인해 주세요.(https://httpd.apache.org/download.cgi)"
     exit 0
     fi
-    tar -zxvf $LDIR/httpd-$apv.tar.gz
+    tar -zxvf $LDIR/httpd-$apv.tar.gz -C $LDIR/
 fi
 
 
@@ -214,7 +214,7 @@ if [ "$apv" = "" ]; then
         mv $LDIR/apr-$arv $LDIR/httpd-2.4.54/srclib/apr
         mv $LDIR/apr-util-$auv $LDIR/httpd-2.4.54/srclib/apr-util
     fi
-    cd $ADIR/httpd-2.4.54/
+    cd $LDIR/httpd-2.4.54/
     ./configure --prefix=$ADIR/ --with-pcre=$LDIR/bin/pcre2-config
     make && make install
 else
@@ -225,10 +225,12 @@ else
         mv $LDIR/apr-$arv $LDIR/httpd-$apv/srclib/apr
         mv $LDIR/apr-util-$auv $LDIR/httpd-2.4.54/srclib/arp-util
     fi
+    cd $LDIR/httpd-2.4.54/
     ./configure --prefix=$ADIR/ --with-pcre=$LDIR/bin/pcre2-config
     make && make install
 fi
 
+######################## 실행 확인 ##########################
 
 
 #cp -arp libtool libtoolT
