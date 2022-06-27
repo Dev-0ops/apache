@@ -176,7 +176,7 @@ read apv
 
 if [ "$apv" = "" ]; then
     wget -P $LDIR https://dlcdn.apache.org/httpd/httpd-2.4.54.tar.gz
-    tar -zxvf $LDIR/httpd-2.4.54.tar.gz -C $ADIR/
+    tar -zxvf $LDIR/httpd-2.4.54.tar.gz
 else
     wegt -P $LDIR http://archive.apache.org/dist/httpd/httpd-$apv.tar.gz
         if [ $? -ne 0 ]; then
@@ -184,7 +184,7 @@ else
     echo "공식 문서를 확인해 주세요.(https://httpd.apache.org/download.cgi)"
     exit 0
     fi
-    tar -zxvf $LDIR/httpd-$apv.tar.gz -C $ADIR/
+    tar -zxvf $LDIR/httpd-$apv.tar.gz
 fi
 
 
@@ -207,30 +207,28 @@ echo "apr, apr-util 라이브러리 경로 이동 & 컴파일"
 
 if [ "$apv" = "" ]; then
     if [ "$arv" = "" ]; then
-        mv apr-1.7.0 $ADIR/httpd-2.4.54/srclib/apr
-        mv apr-util-1.6.1 $ADIR/httpd-2.4.54/srclib/apr-util
+        mv $LDIR/apr-1.7.0 $LDIR/httpd-2.4.54/srclib/apr
+        mv $LDIR/apr-util-1.6.1 $LDIR/httpd-2.4.54/srclib/apr-util
     
     else
-        mv apr-$arv $ADIR/httpd-2.4.54/srclib/apr
-        mv apr-util-$auv $ADIR/httpd-2.4.54/srclib/apr-util
+        mv $LDIR/apr-$arv $LDIR/httpd-2.4.54/srclib/apr
+        mv $LDIR/apr-util-$auv $LDIR/httpd-2.4.54/srclib/apr-util
     fi
     cd $ADIR/httpd-2.4.54/
-    ./configure --prefix=$ADIR/httpd-2.4.54 --with-pcre=$LDIR/bin/pcre-config
+    ./configure --prefix=$ADIR/ --with-pcre=$LDIR/bin/pcre2-config
     make && make install
 else
     if [ "$arv" = "" ]; then
-        cd $LDIR
-        mv apr-1.7.0 $ADIR/httpd-$apv/srclib/
-        mv apr-util-1.6.1 $ADIR/httpd-2.4.54/srclib/
+        mv $LDIR/apr-1.7.0 $LDIR/httpd-$apv/srclib/apr
+        mv $LDIR/apr-util-1.6.1 $LDIR/httpd-2.4.54/srclib/apr-util
     else
-        cd $LDIR
-        mv apr-$arv $ADIR/httpd-$apv/srclib/
-        mv apr-util-$auv $ADIR/httpd-2.4.54/srclib/
+        mv $LDIR/apr-$arv $LDIR/httpd-$apv/srclib/apr
+        mv $LDIR/apr-util-$auv $LDIR/httpd-2.4.54/srclib/arp-util
     fi
-    ./configure --prefix=$ADIR/httpd-$apv --with-pcre=$LDIR/bin/pcre2-config
+    ./configure --prefix=$ADIR/ --with-pcre=$LDIR/bin/pcre2-config
     make && make install
 fi
 
 
 
-cp -arp libtool libtoolT
+#cp -arp libtool libtoolT
